@@ -398,7 +398,26 @@ section {
 .hero-buttons {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1.5rem;
+}
+
+.hero-buttons .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 0 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.hero-buttons .btn-secondary {
+  border: 2px solid var(--primary-color);
+  padding-top: calc(0.8rem - 2px);
+  padding-bottom: calc(0.8rem - 2px);
 }
 
 .hero-scroll-indicator {
@@ -1511,4 +1530,172 @@ section {
 .btn-outline:hover {
   background-color: rgba(123, 104, 238, 0.1);
   color: #6A5ACD;
+}
+
+/* Admin Dashboard Tabs */
+.admin-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.tab-button {
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-button:hover {
+  color: #333;
+}
+
+.tab-button.active {
+  color: #1a73e8;
+  font-weight: 600;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #1a73e8;
+}
+
+/* Performances List */
+.performances-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.performances-list th,
+.performances-list td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.performances-list th {
+  font-weight: 600;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+.performance-thumbnail {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.status-active {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  background-color: #e6f7ed;
+  color: #0d904f;
+}
+
+.status-inactive {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  background-color: #f8e6e6;
+  color: #d73333;
+}
+
+.btn-edit {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 0.35rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+  background-color: #e3e3e3;
+}
+
+.admin-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-actions h2 {
+  margin: 0;
+  color: #333;
+}
+
+/* Performance type and filter styles */
+.type-upcoming {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  background-color: #e6f0ff;
+  color: #0066cc;
+}
+
+.type-previous {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  background-color: #f0f0f0;
+  color: #666666;
+}
+
+.admin-actions-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.admin-filters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-button:hover {
+  border-color: #bbb;
+}
+
+.filter-button.active {
+  background-color: #7B68EE;
+  color: white;
+  border-color: #7B68EE;
+}
+
+.performance-thumbnail {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
 }

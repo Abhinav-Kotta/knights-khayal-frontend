@@ -10,6 +10,7 @@ import Footer from './components/Footer'
 import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
 import MemberForm from './pages/MemberForm'
+import PerformanceForm from './pages/PerformanceForm'
 import './App.css'
 
 // Main website component
@@ -90,6 +91,8 @@ function App() {
             </ProtectedRoute>
           } 
         />
+        
+        {/* Member management routes */}
         <Route 
           path="/admin/members/new" 
           element={
@@ -103,6 +106,24 @@ function App() {
           element={
             <ProtectedRoute>
               <MemberForm />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Performance management routes */}
+        <Route 
+          path="/admin/performances/new" 
+          element={
+            <ProtectedRoute>
+              <PerformanceForm />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/performances/edit/:id" 
+          element={
+            <ProtectedRoute>
+              <PerformanceForm />
             </ProtectedRoute>
           } 
         />

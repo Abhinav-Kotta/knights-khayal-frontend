@@ -43,10 +43,10 @@ const Hero = () => {
         </p>
         <div className="hero-buttons">
           <a href="#performances" className="btn btn-primary parallax" data-speed="3">
-            Upcoming Shows
+            UPCOMING SHOWS
           </a>
           <a href="#about" className="btn btn-secondary parallax" data-speed="3">
-            Discover Our Story
+            DISCOVER OUR STORY
           </a>
         </div>
       </div>

@@ -1,5 +1,8 @@
 // src/components/Contact.tsx
 import { useState, FormEvent } from 'react'
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +11,8 @@ const Contact = () => {
     subject: '',
     message: ''
   })
+  
+  const [loading, setLoading] = useState(false)
   
   const [formStatus, setFormStatus] = useState<{
     submitted: boolean,
@@ -27,7 +32,7 @@ const Contact = () => {
     }))
   }
   
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     
     // Validate form
@@ -51,29 +56,59 @@ const Contact = () => {
       return
     }
     
-    // Simulate form submission
-    setFormStatus({
-      submitted: true,
-      success: true,
-      message: 'Thank you for your message! We will get back to you soon.'
-    })
-    
-    // Reset form after successful submission
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    })
-    
-    // Reset form status after 5 seconds
-    setTimeout(() => {
-      setFormStatus({
-        submitted: false,
-        success: false,
-        message: ''
+    try {
+      setLoading(true)
+      
+      // Send email using your backend API
+      const response = await axios.post(`${API_URL}/send-email`, {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message
       })
-    }, 5000)
+      
+      if (response.status === 200) {
+        // Email sent successfully
+        setFormStatus({
+          submitted: true,
+          success: true,
+          message: 'Thank you for your message! We will get back to you soon.'
+        })
+        
+        // Reset form after successful submission
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        })
+      } else {
+        // Handle error
+        setFormStatus({
+          submitted: true,
+          success: false,
+          message: 'There was a problem sending your message. Please try again later.'
+        })
+      }
+    } catch (error) {
+      console.error('Error sending email:', error)
+      setFormStatus({
+        submitted: true,
+        success: false,
+        message: 'There was a problem sending your message. Please try again later.'
+      })
+    } finally {
+      setLoading(false)
+      
+      // Reset form status after 5 seconds
+      setTimeout(() => {
+        setFormStatus({
+          submitted: false,
+          success: false,
+          message: ''
+        })
+      }, 5000)
+    }
   }
 
   return (
@@ -167,6 +202,7 @@ const Contact = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required 
+                disabled={loading}
               />
             </div>
             
@@ -179,6 +215,7 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required 
+                disabled={loading}
               />
             </div>
             
@@ -190,12 +227,13 @@ const Contact = () => {
                 value={formData.subject}
                 onChange={handleChange}
                 required
+                disabled={loading}
               >
                 <option value="">Select a subject</option>
-                <option value="booking">Performance Booking</option>
-                <option value="collaboration">Collaboration Inquiry</option>
-                <option value="feedback">Feedback</option>
-                <option value="other">Other</option>
+                <option value="Performance Booking">Performance Booking</option>
+                <option value="Collaboration Inquiry">Collaboration Inquiry</option>
+                <option value="Feedback">Feedback</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             
@@ -208,11 +246,16 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
+                disabled={loading}
               ></textarea>
             </div>
             
-            <button type="submit" className="btn btn-primary">
-              Send Message
+            <button 
+              type="submit" 
+              className="btn btn-primary"
+              disabled={loading}
+            >
+              {loading ? 'Sending...' : 'Send Message'}
             </button>
             
             {formStatus.submitted && (
