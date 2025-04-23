@@ -11,6 +11,7 @@ import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
 import MemberForm from './pages/MemberForm'
 import PerformanceForm from './pages/PerformanceForm'
+import ResetPassword from './pages/ResetPassword'
 import './App.css'
 
 // Main website component
@@ -83,6 +84,7 @@ function App() {
         
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/reset-password/:userId/:token" element={<ResetPassword />} />
         <Route 
           path="/admin/dashboard" 
           element={

@@ -227,6 +227,84 @@ section {
 }
 
 /* Navbar */
+
+/* Logo styles for navbar */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Updated logo styles for footer */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: var(--transition);
+}
+
+.logo-wrapper:hover {
+  opacity: 0.9;
+}
+
+.footer-logo-img {
+  height: 50px;
+  width: auto;
+  filter: brightness(1.1);
+}
+
+.footer-logo h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* If you want the logo to be clickable and direct to the home page */
+.footer-logo a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+/* Make logo and text stack vertically on mobile screens */
+@media (max-width: 576px) {
+  .logo {
+    gap: 8px;
+  }
+
+  .logo-image {
+    height: 30px;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+  }
+  
+  .logo-wrapper {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .footer-logo-img {
+    margin: 0 auto;
+  }
+}
 .navbar {
   position: fixed;
   top: 0;
@@ -464,6 +542,138 @@ section {
 }
 
 /* About Section */
+
+/* Slideshow styles */
+.about-image-slideshow {
+  flex: 1;
+  position: relative;
+}
+
+.slideshow-container {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  position: relative;
+  height: 400px;
+  box-shadow: var(--box-shadow);
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 1;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: all 0.3s ease;
+}
+
+.slide-arrow:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.slide-arrow svg {
+  width: 20px;
+  height: 20px;
+  color: var(--primary-color);
+}
+
+.slide-arrow.prev {
+  left: 15px;
+}
+
+.slide-arrow.next {
+  right: 15px;
+}
+
+.slide-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.slide-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slide-dot.active {
+  background: var(--primary-color);
+  transform: scale(1.2);
+}
+
+/* Keep the frame consistent with the existing design */
+.about-image-slideshow .image-frame {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: 20px;
+  bottom: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  z-index: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .slideshow-container {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slideshow-container {
+    height: 250px;
+  }
+  
+  .slide-arrow {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .slide-arrow svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
 .about-section {
   background: var(--bg-gradient);
   position: relative;
@@ -1034,6 +1244,171 @@ section {
 .footer-bottom p {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.7);
+}
+
+/* Modern Footer - TwelveLabs Style with Purple Theme */
+.modern-footer {
+  background: linear-gradient(135deg, #1a1a2e 0%, #282846 100%);
+  color: #fff;
+  padding: 4rem 2rem 2rem;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+
+.footer-column h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  position: relative;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 30px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 0.8rem;
+}
+
+.footer-column ul li a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.footer-column ul li a:hover {
+  color: var(--primary-color);
+}
+
+.footer-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-logo h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+.footer-copyright p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-bottom-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+}
+
+/* Updated styles for the logo with text */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: var(--transition);
+}
+
+.logo-wrapper:hover {
+  opacity: 0.9;
+}
+
+.footer-logo-img {
+  height: 50px;
+  width: auto;
+  filter: brightness(1.1);
+}
+
+.footer-logo h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* If you want the logo to be clickable and direct to the home page */
+.footer-logo a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+/* Make logo and text stack vertically on mobile screens */
+@media (max-width: 576px) {
+  .logo-wrapper {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .footer-logo-img {
+    margin: 0 auto;
+  }
+}
+.social-footer-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+}
+
+.social-footer-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+.social-footer-link:hover {
+  color: var(--light-text);
+  transform: translateX(5px);
+}
+
+.footer-links-column ul li a.social-footer-link:hover {
+  padding-left: 0;
 }
 
 /* Responsive Styles */
@@ -1698,4 +2073,42 @@ section {
   height: 50px;
   object-fit: cover;
   border-radius: 4px;
+}
+
+/* Add to your App.css */
+.form-hint {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.success-message {
+  background-color: #e6f7ed;
+  color: #0d904f;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.centered-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.back-to-login-btn {
+  color: #7B68EE;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.back-to-login-btn:hover {
+  color: #6A5ACD;
+  text-decoration: underline;
 }

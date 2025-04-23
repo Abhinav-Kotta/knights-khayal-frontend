@@ -36,7 +36,8 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
         <a href="#home" className="logo">
-          Knights Khayal
+          <img src="public/images/khayalpfp.png" alt="" className="logo-image" />
+          <span className="logo-text">Knights Khayal</span>
         </a>
         
         <div className="mobile-menu-button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
