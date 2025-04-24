@@ -20,9 +20,8 @@ const Footer = () => {
           <h3>Resources</h3>
           <ul>
             <li><a href="#performances">Upcoming Shows</a></li>
-            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="https://isa-ucf.wixsite.com/isaucf/gallery">Gallery</a></li>
             <li><a href="#music">Music</a></li>
-            <li><a href="#blog">Blog</a></li>
           </ul>
         </div>
         
