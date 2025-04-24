@@ -52,14 +52,14 @@ const Navbar = () => {
           <li><a href="#members" onClick={() => setMobileMenuOpen(false)}>Members</a></li>
           <li><a href="#performances" onClick={() => setMobileMenuOpen(false)}>Performances</a></li>
           <li><a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a></li>
-          <li className="admin-link">
+          {/* <li className="admin-link">
             <Link 
               to={isAdminLoggedIn ? "/admin/dashboard" : "/admin/login"} 
               onClick={() => setMobileMenuOpen(false)}
             >
               Admin
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </nav>
