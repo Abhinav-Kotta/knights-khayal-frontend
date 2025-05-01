@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react'
 
 const Hero = () => {
+
   const heroRef = useRef<HTMLDivElement>(null)
   
   useEffect(() => {
@@ -28,18 +29,16 @@ const Hero = () => {
   return (
     <div className="hero" ref={heroRef}>
       <div className="hero-background">
-        <div className="stars parallax" data-speed="-20"></div>
-        <div className="clouds parallax" data-speed="-10"></div>
-        <div className="mountains parallax" data-speed="-5"></div>
+        <div className="mountains parallax" data-speed="-15"></div>
+        <div className="mic"></div>
       </div>
       
       <div className="hero-content">
-        <h1 className="hero-title parallax" data-speed="5">
-          <span>Knights</span>
-          <span className="khayal">Khayal</span>
+        <h1 className="hero-title parallax" data-speed="-80">
+          <img src="/images/logokhayal.png" alt="LogoImage" />
         </h1>
         <p className="hero-subtitle parallax" data-speed="2">
-          Where Southeast Asian tradition meets the imagination of Indian classical music
+          Where South Asian tradition meets the imagination of Indian classical music at the University of Central Florida
         </p>
         <div className="hero-buttons">
           <a href="#performances" className="btn btn-primary parallax" data-speed="3">

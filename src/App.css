@@ -1,17 +1,17 @@
 :root {
-  --primary-color: #7b68ee; /* Soft purple */
-  --secondary-color: #ff8c69; /* Soft orange */
-  --accent-color: #20b2aa; /* Light sea green */
-  --background-color: #f9f8ff;
-  --text-color: #333;
+  --primary-color: #a07fbe; /* Soft purple */
+  --secondary-color: #ffc0ad; /* Soft orange */
+  --accent-color: #ffa200; 
+  --background-color: #000000;
+  --text-color: #ffecca;
   --light-text: #fff;
-  --dark-text: #1a1a2e;
+  --dark-text: #c5966b;
   --border-radius: 8px;
-  --box-shadow: 0 4px 20px rgba(123, 104, 238, 0.15);
+  --box-shadow: 0 4px 20px #ffd0929f;
   --transition: all 0.3s ease;
-  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e2e6f0 100%);
+  --bg-gradient: linear-gradient(135deg, #000000 0%, #34134b 100%);
   --card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(246, 246, 255, 0.8) 100%);
-  --overlay-gradient: linear-gradient(to bottom, rgba(123, 104, 238, 0.1), rgba(32, 178, 170, 0.2));
+  --overlay-gradient: linear-gradient(to bottom, rgba(84, 55, 110, 0.1), rgba(178, 110, 32, 0.149));
 }
 
 * {
@@ -110,19 +110,22 @@ a:hover {
 .btn-primary {
   background: var(--primary-color);
   color: var(--light-text);
-  box-shadow: 0 4px 15px rgba(123, 104, 238, 0.3);
+  box-shadow: 0 0px 15px #ffd8b3;
+  border: 1px solid #ffe9d4;
 }
 
 .btn-primary:hover {
-  background: #6a5acd;
+  background: #9c61ac;
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(123, 104, 238, 0.5);
+  box-shadow: 0 0px 25px #ffd8b3;
+  border: 1px solid #ffe9d4;
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  color: #eeab68;
+  box-shadow: 0 0px 15px #ffd8b3;
+  border: 1px solid #ffe9d4;
 }
 
 .btn-secondary:hover {
@@ -135,13 +138,13 @@ a:hover {
   color: var(--light-text);
   font-size: 0.9rem;
   padding: 0.6rem 1.2rem;
-  box-shadow: 0 4px 15px rgba(255, 140, 105, 0.3);
+  box-shadow: 0 0px 15px #ffd8b3;;
 }
 
 .btn-ticket:hover {
   background: #ff7f50;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 140, 105, 0.4);
+  box-shadow: 0 0px 20px #ffd8b3;;
 }
 
 .btn-subscribe {
@@ -155,7 +158,7 @@ a:hover {
 }
 
 .btn-subscribe:hover {
-  background: #1c9e98;
+  background: #ecb44c;
 }
 
 /* Layout */
@@ -400,12 +403,27 @@ section {
 }
 
 .hero-background {
+  background-size: cover;         
+  background-position: center;    
+  background-repeat: no-repeat;   
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  z-index: -2;      
+}
+
+.hero-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/ShowcaseGroupPhoto1.JPG');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.2;
+  z-index: -1;
 }
 
 .stars {
@@ -414,9 +432,9 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: radial-gradient(circle, #fff 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: 0.5;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
 }
 
 .clouds {
@@ -435,11 +453,25 @@ section {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 30%;
-  background-image: url('/images/mountains.svg');
+  height: 40%;
+  background-image: url('/images/notes.svg');
   background-size: cover;
-  background-position: center;
-  opacity: 0.5;
+  background-position: top;
+  opacity: 1;
+  z-index: 1;
+}
+
+.mic {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 22%;
+  height: 90%;
+  background-image: url('/images/mic.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  z-index: 2;
 }
 
 .hero-content {
@@ -691,12 +723,14 @@ section {
   top: -150px;
   left: -150px;
   background: radial-gradient(circle at center, rgba(123, 104, 238, 0.2) 0%, rgba(123, 104, 238, 0) 70%);
+  opacity: 0;
 }
 
 .about-decoration.right {
   bottom: -150px;
   right: -150px;
   background: radial-gradient(circle at center, rgba(32, 178, 170, 0.2) 0%, rgba(32, 178, 170, 0) 70%);
+  opacity: 0;
 }
 
 .about-content {
@@ -832,7 +866,7 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(123, 104, 238, 0.8);
+  background: #9c61ac;
   color: var(--light-text);
   display: flex;
   justify-content: center;
@@ -1018,12 +1052,14 @@ section {
   top: -200px;
   left: -200px;
   background: radial-gradient(circle at center, rgba(255, 140, 105, 0.2) 0%, rgba(255, 140, 105, 0) 70%);
+  opacity: 0;
 }
 
 .contact-decoration.right {
   bottom: -200px;
   right: -200px;
   background: radial-gradient(circle at center, rgba(123, 104, 238, 0.2) 0%, rgba(123, 104, 238, 0) 70%);
+  opacity: 0;
 }
 
 .contact-container {
@@ -1248,7 +1284,7 @@ section {
 
 /* Modern Footer - TwelveLabs Style with Purple Theme */
 .modern-footer {
-  background: linear-gradient(135deg, #1a1a2e 0%, #282846 100%);
+  background: linear-gradient(135deg, #19130a 0%, #000000 100%);
   color: #fff;
   padding: 4rem 2rem 2rem;
   position: relative;
@@ -1791,7 +1827,7 @@ section {
 }
 
 .form-group input:focus {
-  border-color: #7B68EE;
+  border-color: #9c61ac;
   outline: none;
   box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.1);
 }
@@ -1808,7 +1844,7 @@ section {
 .login-btn {
   width: 100%;
   padding: 0.8rem;
-  background-color: #7B68EE;
+  background-color: #9c61ac;
   color: white;
   border: none;
   border-radius: 4px;
@@ -1819,7 +1855,7 @@ section {
 }
 
 .login-btn:hover {
-  background-color: #6A5ACD;
+  background-color: #9c61ac;
 }
 
 .login-btn:disabled {
@@ -1837,7 +1873,7 @@ section {
 .forgot-password-btn {
   background: none;
   border: none;
-  color: #7B68EE;
+  color: #9c61ac;
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0.5rem;
@@ -1845,7 +1881,7 @@ section {
 }
 
 .forgot-password-btn:hover {
-  color: #6A5ACD;
+  color: #9c61ac;
   text-decoration: underline;
 }
 
@@ -1854,9 +1890,9 @@ section {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  color: #7B68EE;
+  color: #9c61ac;
   background-color: transparent;
-  border: 1px solid #7B68EE;
+  border: 1px solid #9c61ac;
   border-radius: 4px;
   text-decoration: none;
   font-size: 0.9rem;
@@ -1865,7 +1901,7 @@ section {
 
 .back-btn:hover {
   background-color: rgba(123, 104, 238, 0.1);
-  color: #6A5ACD;
+  color: #a95acd;
 }
 
 .back-btn .icon {
@@ -1883,9 +1919,10 @@ section {
 
 /* The purple theme extends to other buttons too */
 .btn-secondary {
-  background-color: #7B68EE;
+  background-color: #eeab68;
   color: white;
-  border: none;
+  box-shadow: 0 0px 15px #ffd8b3;
+  border: 1px solid #ffe9d4;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
@@ -1893,18 +1930,18 @@ section {
 }
 
 .btn-secondary:hover {
-  background-color: #6A5ACD;
+  background-color: #ffdeb0;
 }
 
 .btn-outline {
-  color: #7B68EE;
-  border: 1px solid #7B68EE;
+  color: #9c61ac;
+  border: 1px solid #9c61ac;
   background-color: transparent;
 }
 
 .btn-outline:hover {
   background-color: rgba(123, 104, 238, 0.1);
-  color: #6A5ACD;
+  color: #a95acd;
 }
 
 /* Admin Dashboard Tabs */
@@ -1931,7 +1968,7 @@ section {
 }
 
 .tab-button.active {
-  color: #1a73e8;
+  color: #e5a63b;
   font-weight: 600;
 }
 
@@ -1942,7 +1979,7 @@ section {
   left: 0;
   width: 100%;
   height: 3px;
-  background-color: #1a73e8;
+  background-color: #b06f00;
 }
 
 /* Performances List */
@@ -2063,9 +2100,9 @@ section {
 }
 
 .filter-button.active {
-  background-color: #7B68EE;
+  background-color: #9c61ac;
   color: white;
-  border-color: #7B68EE;
+  border-color: #9c61ac;
 }
 
 .performance-thumbnail {
@@ -2099,7 +2136,7 @@ section {
 }
 
 .back-to-login-btn {
-  color: #7B68EE;
+  color: #9c61ac;
   background: none;
   border: none;
   padding: 0.5rem;
@@ -2109,6 +2146,6 @@ section {
 }
 
 .back-to-login-btn:hover {
-  color: #6A5ACD;
+  color: #9c61ac;
   text-decoration: underline;
 }

@@ -13,6 +13,10 @@ const About = () => {
     "/images/perf_pic_5.jpeg",
     "/images/perf_pic_6.jpeg",
     "/images/perf_pic_7.jpeg",
+    "/images/perf_pic_8.jpeg",
+    "/images/perf_pic_9.jpeg",
+    "/images/perf_pic_10.jpeg",
+    "/images/perf_pic_11.jpeg",
   ]
   
   useEffect(() => {
@@ -88,13 +92,13 @@ const About = () => {
         <div className="about-text">
           <h3>The Dreamweavers of Melody</h3>
           <p>
-            Knights Khayal emerged from the vibrant cultural crossroads of Southeast Asia, 
+            Knights Khayal emerged from the vibrant cultural crossroads of South Asia, 
             bringing together musicians passionate about celebrating the rich tapestry of 
             Indian classical and contemporary music.
           </p>
           <p>
-            Our name reflects our artistic vision - "Knights" representing our dedication 
-            and commitment to musical excellence, and "Khayal" (خیال) meaning imagination 
+            Our name reflects our artistic vision - "Knights" representing the mascot of UCF, 
+            and "Khayal" (خیال) meaning imagination 
             or dreaminess in Urdu and Hindi, embodying the transcendent quality we bring to 
             our performances.
           </p>

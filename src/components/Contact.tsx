@@ -189,6 +189,14 @@ const Contact = () => {
               </svg>
             </a>
           </div>
+          <br></br>
+          <h3>Interested in joining Khayal?</h3>
+          <button
+              className="btn btn-primary"
+              onClick={() => window.open("https://forms.gle/1MxobazxNWwyn2aq5", "_blank")}
+            >
+              Go to Membership Form
+            </button>
         </div>
         
         <div className="contact-form">
