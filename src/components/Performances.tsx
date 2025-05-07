@@ -42,7 +42,9 @@ const Performances = () => {
     fetchPerformances()
   }, [])
   
-  const performances = activeTab === 'upcoming' ? upcomingPerformances : previousPerformances
+  const performances = activeTab === 'upcoming' 
+  ? (Array.isArray(upcomingPerformances) ? upcomingPerformances : []) 
+  : (Array.isArray(previousPerformances) ? previousPerformances : []);
 
   return (
     <div className="performances-section">
