@@ -24,7 +24,9 @@ const Members = () => {
       try {
         setLoading(true);
         const response = await axios.get(`${API_URL}/members`);
-        setMembers(response.data);
+        console.log("Members API response:", response.data);
+        // Ensure we're setting an array
+        setMembers(Array.isArray(response.data) ? response.data : []);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching members:', err);
@@ -65,7 +67,7 @@ const Members = () => {
   }
 
   // For testing
-  const mockMembers: Member[] = members.length > 0 ? members : [
+  const mockMembers: Member[] = [
     {
       _id: "1",
       name: "John Doe",
@@ -84,7 +86,11 @@ const Members = () => {
     }
   ];
 
-  const displayMembers = members && members.length > 0 ? members : mockMembers;
+  const displayMembers = Array.isArray(members) && members.length > 0 
+    ? members 
+    : mockMembers;
+
+  console.log("displayMembers is array:", Array.isArray(displayMembers));
 
   return (
     <div className="members-section">
@@ -94,31 +100,35 @@ const Members = () => {
       </div>
       
       <div className="members-container">
-        {displayMembers.map(member => (
-          <div key={member._id} className={`member-card ${member.isCaptain ? 'captain' : ''}`}>
-            <div className="member-image">
-              <img 
-                src={member.image && member.image.startsWith('http') 
-                  ? member.image 
-                  : member.image && !member.image.startsWith('/')
-                    ? `/${member.image}`
-                    : member.image || '/placeholder.jpg'}
-                alt={member.name}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = '/placeholder.jpg';
-                }}
-              />
-              <div className="member-overlay">
-                <p>{member.bio}</p>
+        {Array.isArray(displayMembers) ? (
+          displayMembers.map(member => (
+            <div key={member._id} className={`member-card ${member.isCaptain ? 'captain' : ''}`}>
+              <div className="member-image">
+                <img 
+                  src={member.image && member.image.startsWith('http') 
+                    ? member.image 
+                    : member.image && !member.image.startsWith('/')
+                      ? `/${member.image}`
+                      : member.image || '/placeholder.jpg'}
+                  alt={member.name}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder.jpg';
+                  }}
+                />
+                <div className="member-overlay">
+                  <p>{member.bio}</p>
+                </div>
+              </div>
+              <div className="member-info">
+                <h3>{member.name}</h3>
+                <p className="member-instrument">{member.instrument}</p>
               </div>
             </div>
-            <div className="member-info">
-              <h3>{member.name}</h3>
-              <p className="member-instrument">{member.instrument}</p>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No members to display</p>
+        )}
       </div>
     </div>
   );
