@@ -100,8 +100,14 @@ const Members = () => {
               <img 
                 src={member.image && member.image.startsWith('http') 
                   ? member.image 
-                  : `${member.image ? member.image : '/placeholder.jpg'}`}
-                alt={member.name} 
+                  : member.image && !member.image.startsWith('/')
+                    ? `/${member.image}`
+                    : member.image || '/placeholder.jpg'}
+                alt={member.name}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/placeholder.jpg';
+                }}
               />
               <div className="member-overlay">
                 <p>{member.bio}</p>
