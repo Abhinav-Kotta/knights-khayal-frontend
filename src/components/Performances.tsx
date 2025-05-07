@@ -13,8 +13,8 @@ interface Performance {
   ticketLink?: string
 }
 
-// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-const API_URL ='/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+// const API_URL ='/api';
 
 const Performances = () => {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'previous'>('upcoming')

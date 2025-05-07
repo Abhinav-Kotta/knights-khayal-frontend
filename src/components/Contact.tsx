@@ -2,8 +2,8 @@
 import { useState, FormEvent } from 'react'
 import axios from 'axios'
 
-// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-const API_URL ='/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+// const API_URL ='/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
