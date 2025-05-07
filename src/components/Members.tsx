@@ -84,7 +84,7 @@ const Members = () => {
     }
   ];
 
-  const displayMembers = members.length > 0 ? members : mockMembers;
+  const displayMembers = members && members.length > 0 ? members : mockMembers;
 
   return (
     <div className="members-section">
@@ -98,14 +98,10 @@ const Members = () => {
           <div key={member._id} className={`member-card ${member.isCaptain ? 'captain' : ''}`}>
             <div className="member-image">
               <img 
-                src={member.image.startsWith('http') 
+                src={member.image && member.image.startsWith('http') 
                   ? member.image 
-                  : `${API_URL.replace('/api', '')}${member.image}`} 
+                  : `${member.image ? member.image : '/placeholder.jpg'}`}
                 alt={member.name} 
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = '/placeholder.jpg';
-                }}
               />
               <div className="member-overlay">
                 <p>{member.bio}</p>
