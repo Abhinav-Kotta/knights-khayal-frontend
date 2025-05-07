@@ -29,8 +29,8 @@ const Performances = () => {
         setLoading(true)
         const response = await axios.get(`${API_URL}/performances`)
         
-        setUpcomingPerformances(response.data.upcoming)
-        setPreviousPerformances(response.data.previous)
+        setUpcomingPerformances(Array.isArray(response.data?.upcoming) ? response.data.upcoming : [])
+        setPreviousPerformances(Array.isArray(response.data?.previous) ? response.data.previous : [])
         setLoading(false)
       } catch (err) {
         console.error('Error fetching performances:', err)
@@ -77,7 +77,7 @@ const Performances = () => {
         <div className="error-container">
           <p>{error}</p>
         </div>
-      ) : performances.length === 0 ? (
+      ) : Array.isArray(performances) && performances.length === 0 ? (
         <div className="no-performances">
           <p>No {activeTab === 'upcoming' ? 'upcoming' : 'previous'} performances at this time.</p>
         </div>
