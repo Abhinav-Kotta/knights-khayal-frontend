@@ -11,8 +11,8 @@ interface Member {
 }
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-const BASE_URL = window.location.origin;
-const BACKEND_URL = 'https://kkhayal.com';
+// Update this to match your backend server URL
+const BACKEND_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
 
 const Members = () => {
   const [members, setMembers] = useState<Member[]>([]);
@@ -92,21 +92,21 @@ const Members = () => {
     console.log('Original image path:', imagePath);
     
     if (!imagePath) {
-      return `${BASE_URL}/images/placeholder.jpg`;
+      return `/images/placeholder.jpg`;
     }
     
+    // Handle absolute URLs
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
     
+    // Handle upload paths from backend - this is the key change
     if (imagePath.startsWith('/uploads/')) {
-      // For uploads, use the proxy through our own server
-      // This enables our proxy server to handle it
-      return `${BASE_URL}${imagePath}`;
+      return `${BACKEND_URL}${imagePath}`;
     }
     
-    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-    return `${BASE_URL}${cleanPath}`;
+    // Handle local paths (like placeholder)
+    return `/images/${imagePath.replace('/images/', '')}`;
   };
 
   return (
@@ -131,7 +131,7 @@ const Members = () => {
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       console.log(`Image load error for: ${member.image}`);
-                      target.src = `${BASE_URL}/images/placeholder.jpg`;
+                      target.src = `/images/placeholder.jpg`;
                       console.log(`Falling back to placeholder`);
                     }}
                   />
