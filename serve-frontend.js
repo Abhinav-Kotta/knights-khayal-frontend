@@ -11,11 +11,10 @@ const PORT = process.env.PORT || 5173;
 const distPath = path.join(__dirname, 'dist');
 const imagesPath = path.join(distPath, 'images');
 
-// Setting the correct API URL as per your .env configuration
-const API_URL = 'https://kkhayal.com';
-const API_PATH = '/api';
+// Use the correct domain for your backend
+const BACKEND_DOMAIN = 'kkhayal.com';
 
-console.log(`Backend API URL set to: ${API_URL}${API_PATH}`);
+console.log(`Backend domain set to: ${BACKEND_DOMAIN}`);
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -116,15 +115,15 @@ const server = http.createServer((req, res) => {
   
   // Handle API requests
   if (safePath.startsWith('/api/')) {
-    const targetUrl = `${API_URL}${urlPath}`;
+    const targetUrl = `https://${BACKEND_DOMAIN}${urlPath}`;
     proxyRequest(req, res, targetUrl);
     return;
   }
   
-  // Handle uploads - these should go to your main domain, not the /api path
+  // Handle uploads - direct to the main domain
   if (safePath.startsWith('/uploads/')) {
     console.log(`Image request detected: ${safePath}`);
-    const targetUrl = `${API_URL}${urlPath}`;
+    const targetUrl = `https://${BACKEND_DOMAIN}${urlPath}`;
     console.log(`Forwarding to backend: ${targetUrl}`);
     proxyRequest(req, res, targetUrl);
     return;
@@ -170,5 +169,5 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT} - http://localhost:${PORT}`);
   console.log(`Static files serving from: ${distPath}`);
   console.log(`Images directory: ${imagesPath}`);
-  console.log(`Proxying API requests to: ${API_URL}${API_PATH}`);
+  console.log(`Proxying requests to backend: https://${BACKEND_DOMAIN}`);
 });
