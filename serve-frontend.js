@@ -12,28 +12,35 @@ const distPath = path.join(__dirname, 'dist');
 
 app.use(express.static(distPath));
 
-app.get('/uploads/:imageName(*)', (req, res) => {
-  const imagePath = path.join(__dirname, 'uploads', req.params.imageName);
-  res.sendFile(imagePath, (err) => {
-    if (err) {
-      console.error('Error sending file:', err);
-      res.status(404).send('Image not found');
-    }
-  });
-});
-
-app.get('/:path(*)', (req, res) => {
-  const filePath = path.join(distPath, req.params.path);
+app.use('/uploads', (req, res, next) => {
+  const uploadPath = path.join(__dirname, 'uploads');
+  const requestedFile = req.path;
   
-  fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
-      return res.sendFile(path.join(distPath, 'index.html'));
-    }
+  if (requestedFile) {
+    const filePath = path.join(uploadPath, requestedFile.replace(/^\//, ''));
     
-    res.sendFile(filePath);
-  });
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        return next();
+      }
+      
+      res.sendFile(filePath, (err) => {
+        if (err) {
+          console.error('Error sending file:', err);
+          res.status(404).send('File not found');
+        }
+      });
+    });
+  } else {
+    next();
+  }
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
+// Start the server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
