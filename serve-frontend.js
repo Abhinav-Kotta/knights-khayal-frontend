@@ -1,4 +1,3 @@
-// super-simple-server.js
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
@@ -13,19 +12,28 @@ const distPath = path.join(__dirname, 'dist');
 
 app.use(express.static(distPath));
 
-app.use((req, res, next) => {
-  const filePath = path.join(distPath, req.url);
+app.get('/uploads/:imageName(*)', (req, res) => {
+  const imagePath = path.join(__dirname, 'uploads', req.params.imageName);
+  res.sendFile(imagePath, (err) => {
+    if (err) {
+      console.error('Error sending file:', err);
+      res.status(404).send('Image not found');
+    }
+  });
+});
+
+app.get('/:path(*)', (req, res) => {
+  const filePath = path.join(distPath, req.params.path);
   
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
       return res.sendFile(path.join(distPath, 'index.html'));
     }
     
-    next();
+    res.sendFile(filePath);
   });
 });
 
-// Start the server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
