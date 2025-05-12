@@ -10,7 +10,12 @@ const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 5173;
 const distPath = path.join(__dirname, 'dist');
 const imagesPath = path.join(distPath, 'images');
-const API_URL = process.env.API_URL || 'http://localhost:5000';
+
+// Setting the correct API URL as per your .env configuration
+const API_URL = 'https://kkhayal.com';
+const API_PATH = '/api';
+
+console.log(`Backend API URL set to: ${API_URL}${API_PATH}`);
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -45,37 +50,56 @@ if (!fs.existsSync(imagesPath)) {
 const placeholderPath = path.join(imagesPath, 'placeholder.jpg');
 if (!fs.existsSync(placeholderPath)) {
   console.warn(`Warning: placeholder.jpg not found at ${placeholderPath}`);
-  console.warn('Make sure you have a placeholder image at this location.');
 }
 
 function proxyRequest(req, res, targetUrl) {
-  console.log(`Proxying request to: ${targetUrl}`);
+  console.log(`PROXY REQUEST: ${req.method} ${req.url} -> ${targetUrl}`);
   
-  const url = new URL(targetUrl);
-  
-  const options = {
-    hostname: url.hostname,
-    port: url.port || (url.protocol === 'https:' ? 443 : 80),
-    path: url.pathname + url.search,
-    method: req.method,
-    headers: {
-      ...req.headers,
-      host: url.host,
+  try {
+    const url = new URL(targetUrl);
+    
+    const options = {
+      hostname: url.hostname,
+      port: url.port || (url.protocol === 'https:' ? 443 : 80),
+      path: url.pathname + url.search,
+      method: req.method,
+      headers: {
+        ...req.headers,
+        host: url.host,
+      }
+    };
+    
+    const proxy = (url.protocol === 'https:' ? https : http).request(options, (proxyRes) => {
+      console.log(`Proxy response received: ${proxyRes.statusCode}`);
+      
+      res.writeHead(proxyRes.statusCode, proxyRes.headers);
+      
+      proxyRes.on('data', (chunk) => {
+        res.write(chunk);
+      });
+      
+      proxyRes.on('end', () => {
+        console.log(`Proxy request complete: ${req.url}`);
+        res.end();
+      });
+    });
+    
+    proxy.on('error', (err) => {
+      console.error(`Proxy error for ${req.url}:`, err);
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end(`Proxy Error: ${err.message}`);
+    });
+    
+    if (req.readable) {
+      req.pipe(proxy);
+    } else {
+      proxy.end();
     }
-  };
-  
-  const proxy = (url.protocol === 'https:' ? https : http).request(options, (proxyRes) => {
-    res.writeHead(proxyRes.statusCode, proxyRes.headers);
-    proxyRes.pipe(res, { end: true });
-  });
-  
-  proxy.on('error', (err) => {
-    console.error('Proxy error:', err);
+  } catch (error) {
+    console.error(`Error in proxyRequest:`, error);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end('Proxy Error');
-  });
-  
-  req.pipe(proxy, { end: true });
+    res.end(`Server Error: ${error.message}`);
+  }
 }
 
 const server = http.createServer((req, res) => {
@@ -86,18 +110,22 @@ const server = http.createServer((req, res) => {
     cleanPath = cleanPath.split('?')[0];
   }
   
-  console.log(`Request: ${urlPath}`);
+  console.log(`Request: ${req.method} ${urlPath}`);
   
   const safePath = path.normalize(cleanPath);
   
+  // Handle API requests
   if (safePath.startsWith('/api/')) {
     const targetUrl = `${API_URL}${urlPath}`;
     proxyRequest(req, res, targetUrl);
     return;
   }
   
+  // Handle uploads - these should go to your main domain, not the /api path
   if (safePath.startsWith('/uploads/')) {
+    console.log(`Image request detected: ${safePath}`);
     const targetUrl = `${API_URL}${urlPath}`;
+    console.log(`Forwarding to backend: ${targetUrl}`);
     proxyRequest(req, res, targetUrl);
     return;
   }
@@ -142,5 +170,5 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT} - http://localhost:${PORT}`);
   console.log(`Static files serving from: ${distPath}`);
   console.log(`Images directory: ${imagesPath}`);
-  console.log(`Proxying API requests to: ${API_URL}`);
+  console.log(`Proxying API requests to: ${API_URL}${API_PATH}`);
 });
