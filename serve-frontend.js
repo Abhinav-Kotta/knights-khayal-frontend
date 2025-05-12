@@ -9,9 +9,9 @@ const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 5173;
 const distPath = path.join(__dirname, 'dist');
-const API_URL = process.env.API_URL || 'http://localhost:5000'; 
+const imagesPath = path.join(distPath, 'images');
+const API_URL = process.env.API_URL || 'http://localhost:5000';
 
-// MIME types for different file extensions
 const MIME_TYPES = {
   '.html': 'text/html',
   '.js': 'text/javascript',
@@ -37,28 +37,15 @@ const MIME_TYPES = {
   '.txt': 'text/plain',
 };
 
-// Make sure placeholder.jpg exists
-const placeholderPath = path.join(distPath, 'placeholder.jpg');
+if (!fs.existsSync(imagesPath)) {
+  console.log(`Creating images directory at: ${imagesPath}`);
+  fs.mkdirSync(imagesPath, { recursive: true });
+}
+
+const placeholderPath = path.join(imagesPath, 'placeholder.jpg');
 if (!fs.existsSync(placeholderPath)) {
-  console.warn('Warning: placeholder.jpg not found in dist directory.');
-  console.warn('Creating a simple placeholder image...');
-  
-  if (!fs.existsSync(distPath)) {
-    fs.mkdirSync(distPath, { recursive: true });
-  }
-  
-  try {
-    const defaultPlaceholder = path.join(__dirname, 'src', 'assets', 'placeholder.jpg');
-    if (fs.existsSync(defaultPlaceholder)) {
-      fs.copyFileSync(defaultPlaceholder, placeholderPath);
-      console.log('Copied placeholder.jpg from assets directory.');
-    } else {
-      fs.writeFileSync(placeholderPath, 'Placeholder Image');
-      console.log('Created a simple placeholder file.');
-    }
-  } catch (err) {
-    console.error('Failed to create placeholder image:', err);
-  }
+  console.warn(`Warning: placeholder.jpg not found at ${placeholderPath}`);
+  console.warn('Make sure you have a placeholder image at this location.');
 }
 
 function proxyRequest(req, res, targetUrl) {
@@ -79,7 +66,6 @@ function proxyRequest(req, res, targetUrl) {
   
   const proxy = (url.protocol === 'https:' ? https : http).request(options, (proxyRes) => {
     res.writeHead(proxyRes.statusCode, proxyRes.headers);
-    
     proxyRes.pipe(res, { end: true });
   });
   
@@ -89,16 +75,12 @@ function proxyRequest(req, res, targetUrl) {
     res.end('Proxy Error');
   });
   
-  // Pipe the original request to the proxy request
   req.pipe(proxy, { end: true });
 }
 
-// Create the HTTP server
 const server = http.createServer((req, res) => {
-  // Parse the URL path
   let urlPath = req.url;
   
-  // Handle URL params by removing everything after the ? character for file path checks
   let cleanPath = urlPath;
   if (cleanPath.includes('?')) {
     cleanPath = cleanPath.split('?')[0];
@@ -106,32 +88,23 @@ const server = http.createServer((req, res) => {
   
   console.log(`Request: ${urlPath}`);
   
-  // Normalize path to prevent directory traversal attacks
   const safePath = path.normalize(cleanPath);
   
-  // Proxy API requests to the backend server
   if (safePath.startsWith('/api/')) {
     const targetUrl = `${API_URL}${urlPath}`;
     proxyRequest(req, res, targetUrl);
     return;
   }
   
-  // Proxy uploads requests to the backend server
   if (safePath.startsWith('/uploads/')) {
     const targetUrl = `${API_URL}${urlPath}`;
     proxyRequest(req, res, targetUrl);
     return;
   }
   
-  // Check for placeholder.jpg specifically
   if (safePath === '/placeholder.jpg') {
-    if (fs.existsSync(placeholderPath)) {
-      serveFile(placeholderPath, res);
-    } else {
-      console.error('Placeholder image not found after attempted creation');
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('Placeholder image not found');
-    }
+    res.writeHead(302, { 'Location': '/images/placeholder.jpg' });
+    res.end();
     return;
   }
   
@@ -159,6 +132,7 @@ function serveFile(filePath, res) {
     
     const ext = path.extname(filePath);
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+    
     res.writeHead(200, { 'Content-Type': contentType });
     res.end(data);
   });
@@ -167,5 +141,6 @@ function serveFile(filePath, res) {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT} - http://localhost:${PORT}`);
   console.log(`Static files serving from: ${distPath}`);
+  console.log(`Images directory: ${imagesPath}`);
   console.log(`Proxying API requests to: ${API_URL}`);
 });

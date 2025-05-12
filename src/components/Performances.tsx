@@ -1,4 +1,3 @@
-// src/components/Performances.tsx
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -14,7 +13,7 @@ interface Performance {
 }
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-// const API_URL ='/api';
+const BASE_URL = window.location.origin;
 
 const Performances = () => {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'previous'>('upcoming')
@@ -47,22 +46,22 @@ const Performances = () => {
   : (Array.isArray(previousPerformances) ? previousPerformances : []);
 
   const getImageUrl = (imagePath: string) => {
-    if (imagePath && imagePath.startsWith('http')) {
+    console.log('Performance image path:', imagePath);
+    
+    if (!imagePath) {
+      return `${BASE_URL}/images/placeholder.jpg`;
+    }
+    
+    if (imagePath.startsWith('http')) {
       return imagePath;
     }
     
-    const baseUrl = API_URL.includes('/api') 
-      ? API_URL.substring(0, API_URL.indexOf('/api')) 
-      : 'http://localhost:5001';
-    
-    const sanitizedPath = imagePath?.startsWith('/') ? imagePath.substring(1) : imagePath;
-    
-    if (sanitizedPath) {
-      const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-      return `${cleanBaseUrl}/${sanitizedPath}`;
+    if (imagePath.startsWith('/uploads/')) {
+      return `${BASE_URL}${imagePath}`;
     }
     
-    return '/placeholder.jpg';
+    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    return `${BASE_URL}${cleanPath}`;
   };
 
   return (
@@ -107,11 +106,11 @@ const Performances = () => {
               <div className="performance-image">
                 <img 
                   src={getImageUrl(performance.image)} 
-                  alt={performance.title} 
+                  alt={performance.title}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = '/placeholder.jpg';
-                    console.log(`Error loading image: ${performance.image}, falling back to placeholder`);
+                    target.src = `${BASE_URL}/images/placeholder.jpg`;
+                    console.log(`Error loading performance image: ${performance.image}, falling back to placeholder`);
                   }}
                 />
                 <div className="performance-date">

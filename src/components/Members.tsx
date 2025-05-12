@@ -1,4 +1,3 @@
-// File: src/components/Members.tsx
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -11,12 +10,8 @@ interface Member {
   isCaptain: boolean
 }
 
-// Get your API URL from environment variable or default to localhost
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-// Extract the base URL for image paths - this is crucial for loading images
-const BASE_URL = API_URL.includes('/api') 
-  ? API_URL.substring(0, API_URL.indexOf('/api')) 
-  : 'http://localhost:5001';
+const BASE_URL = window.location.origin;
 
 const Members = () => {
   const [members, setMembers] = useState<Member[]>([]);
@@ -29,7 +24,6 @@ const Members = () => {
         setLoading(true);
         const response = await axios.get(`${API_URL}/members`);
         console.log("Members API response:", response.data);
-        // Ensure we're setting an array
         setMembers(Array.isArray(response.data) ? response.data : []);
         setLoading(false);
       } catch (err) {
@@ -70,14 +64,13 @@ const Members = () => {
     );
   }
 
-  // For testing
   const mockMembers: Member[] = [
     {
       _id: "1",
       name: "John Doe",
       instrument: "Guitar",
       bio: "Lead guitarist with 10 years of experience",
-      image: "/placeholder.jpg",
+      image: "/images/placeholder.jpg",
       isCaptain: true
     },
     {
@@ -85,7 +78,7 @@ const Members = () => {
       name: "Jane Smith",
       instrument: "Vocals",
       bio: "Lead vocalist with a passion for Hindustani classical",
-      image: "/placeholder.jpg",
+      image: "/images/placeholder.jpg",
       isCaptain: false
     }
   ];
@@ -97,18 +90,20 @@ const Members = () => {
   const getImageUrl = (imagePath: string) => {
     console.log('Original image path:', imagePath);
     
-    if (imagePath && imagePath.startsWith('http')) {
+    if (!imagePath) {
+      return `${BASE_URL}/images/placeholder.jpg`;
+    }
+    
+    if (imagePath.startsWith('http')) {
       return imagePath;
     }
     
-    const sanitizedPath = imagePath?.startsWith('/') ? imagePath.substring(1) : imagePath;
-    
-    if (sanitizedPath) {
-      const baseUrl = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
-      return `${baseUrl}/${sanitizedPath}`;
+    if (imagePath.startsWith('/uploads/')) {
+      return `${BASE_URL}${imagePath}`;
     }
     
-    return '/placeholder.jpg';
+    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    return `${BASE_URL}${cleanPath}`;
   };
 
   return (
@@ -128,7 +123,7 @@ const Members = () => {
                   alt={member.name}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = '/placeholder.jpg';
+                    target.src = `${BASE_URL}/images/placeholder.jpg`;
                     console.log(`Error loading image: ${member.image}, falling back to placeholder`);
                   }}
                 />
