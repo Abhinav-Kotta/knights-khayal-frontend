@@ -48,7 +48,7 @@ const Footer = () => {
       <div className="footer-bottom-row">
         <div className="footer-logo">
           <a href="#home" className="logo-wrapper">
-            <img src="public/images/khayalpfp.png" alt="Knights Khayal Logo" className="footer-logo-img" />
+            <img src="/images/khayalpfp.png" alt="Knights Khayal Logo" className="footer-logo-img" />
             <h2>Knights Khayal</h2>
           </a>
         </div>

@@ -36,7 +36,7 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
         <a href="#home" className="logo">
-          <img src="public/images/khayalpfp.png" alt="" className="logo-image" />
+          <img src="/images/khayalpfp.png" alt="Knights Khayal Logo" className="logo-image" />
           <span className="logo-text">Knights Khayal</span>
         </a>
         
