@@ -94,33 +94,20 @@ const Members = () => {
     ? members 
     : mockMembers;
 
-  // Helper function to construct proper image URL
   const getImageUrl = (imagePath: string) => {
     console.log('Original image path:', imagePath);
     
-    // If it's already a full URL, return it
     if (imagePath && imagePath.startsWith('http')) {
       return imagePath;
     }
     
-    // If it's a path from the server (like /uploads/filename.jpg)
-    if (imagePath && imagePath.startsWith('/uploads/')) {
-      const fullUrl = `${BASE_URL}${imagePath}`;
-      console.log('Constructed image URL:', fullUrl);
-      return fullUrl;
+    const sanitizedPath = imagePath?.startsWith('/') ? imagePath.substring(1) : imagePath;
+    
+    if (sanitizedPath) {
+      const baseUrl = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
+      return `${baseUrl}/${sanitizedPath}`;
     }
     
-    // If it's just a filename or other relative path
-    if (imagePath && !imagePath.startsWith('/')) {
-      return `${BASE_URL}/${imagePath}`;
-    }
-    
-    // If it's another type of path starting with /
-    if (imagePath) {
-      return `${BASE_URL}${imagePath}`;
-    }
-    
-    // Default placeholder
     return '/placeholder.jpg';
   };
 

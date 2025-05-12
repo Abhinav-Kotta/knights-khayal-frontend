@@ -46,6 +46,25 @@ const Performances = () => {
   ? (Array.isArray(upcomingPerformances) ? upcomingPerformances : []) 
   : (Array.isArray(previousPerformances) ? previousPerformances : []);
 
+  const getImageUrl = (imagePath: string) => {
+    if (imagePath && imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    const baseUrl = API_URL.includes('/api') 
+      ? API_URL.substring(0, API_URL.indexOf('/api')) 
+      : 'http://localhost:5001';
+    
+    const sanitizedPath = imagePath?.startsWith('/') ? imagePath.substring(1) : imagePath;
+    
+    if (sanitizedPath) {
+      const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+      return `${cleanBaseUrl}/${sanitizedPath}`;
+    }
+    
+    return '/placeholder.jpg';
+  };
+
   return (
     <div className="performances-section">
       <div className="section-header">
@@ -87,8 +106,13 @@ const Performances = () => {
             <div key={performance._id} className="performance-card">
               <div className="performance-image">
                 <img 
-                  src={performance.image.startsWith('http') ? performance.image : `${API_URL.replace('/api', '')}${performance.image}`} 
+                  src={getImageUrl(performance.image)} 
                   alt={performance.title} 
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder.jpg';
+                    console.log(`Error loading image: ${performance.image}, falling back to placeholder`);
+                  }}
                 />
                 <div className="performance-date">
                   <span>{new Date(performance.date).toLocaleDateString('en-US', { 
