@@ -1,34 +1,19 @@
 // src/components/Navbar.tsx
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
     }
     
-    // Check if admin is logged in
-    const checkAdminLogin = () => {
-      const token = localStorage.getItem('adminToken')
-      setIsAdminLoggedIn(!!token)
-    }
-    
     window.addEventListener('scroll', handleScroll)
-    
-    // Check login status on mount
-    checkAdminLogin()
-    
-    // Listen for storage events (in case token is added/removed in another tab)
-    window.addEventListener('storage', checkAdminLogin)
     
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('storage', checkAdminLogin)
     }
   }, [])
 
